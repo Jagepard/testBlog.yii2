@@ -10,7 +10,7 @@ class Bootstrap implements BootstrapInterface
     {
         $app->getUrlManager()->addRules(
             [
-
+                'admin' => 'admin/default/index',
             ]
         );
     }
