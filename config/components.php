@@ -13,6 +13,7 @@ return [
     'user' => [
         'identityClass' => 'app\modules\auth\models\User',
         'enableAutoLogin' => true,
+        'loginUrl' => 'login' 
     ],
     'errorHandler' => [
         'errorAction' => 'ship/default/error',
@@ -37,6 +38,5 @@ return [
         'enablePrettyUrl'     => true,
         'showScriptName'      => false,
         'enableStrictParsing' => true,
-        'rules'               => $routes,
     ],
 ];

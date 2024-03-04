@@ -1,7 +1,6 @@
 <?php
 
 $params     = require __DIR__ . '/params.php';
-$routes     = require __DIR__ . '/routes.php';
 $components = require __DIR__ . '/components.php';
 
 $config = [
@@ -24,11 +23,15 @@ $config = [
         'auth' => [
             'class' => 'app\modules\auth\Module',
         ],
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+        ],
     ],
     'bootstrap' => [
         'app\modules\ship\Bootstrap',
         'app\modules\auth\Bootstrap',
         'app\modules\blog\Bootstrap',
+        'app\modules\admin\Bootstrap',
     ],
 ];
 
