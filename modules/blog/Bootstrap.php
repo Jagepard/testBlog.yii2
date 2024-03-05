@@ -10,7 +10,8 @@ class Bootstrap implements BootstrapInterface
     {
         $app->getUrlManager()->addRules(
             [
-                '' => 'blog/default/index', 
+                ''                    => 'blog/default/index', 
+                'material/<slug:\w+>' => 'blog/default/item',
             ]
         );
     }
