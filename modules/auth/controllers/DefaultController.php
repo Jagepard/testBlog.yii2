@@ -62,17 +62,4 @@ class DefaultController extends Controller
 
         return $this->goHome();
     }
-
-    public function actionAddUser()
-    {
-        $user = new User();
-        $user->username = 'admin';
-        $user->email = 'admin@admin.com';
-        $user->setPassword('password');
-        $user->generateAuthKey();
-        $user->save();
-
-
-        dd($user);
-    }
 }
