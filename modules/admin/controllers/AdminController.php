@@ -3,7 +3,6 @@
 namespace app\modules\admin\controllers;
 
 use yii\web\Controller;
-use yii\helpers\Url;
 
 class AdminController extends Controller
 {
@@ -11,8 +10,10 @@ class AdminController extends Controller
 
     public function beforeAction($action)
     {
-        parent::beforeAction($action);
+        if (empty(\Yii::$app->user->identity)) {
+            return $this->redirect('login');
+        }
 
-        return $this->redirect('login');
+        return parent::beforeAction($action);
     }
 }

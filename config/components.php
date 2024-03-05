@@ -16,7 +16,7 @@ return [
         'loginUrl' => 'login' 
     ],
     'errorHandler' => [
-        'errorAction' => 'ship/default/error',
+        'errorAction' => 'ship/error/error',
     ],
     'mailer' => [
         'class'    => \yii\symfonymailer\Mailer::class,
