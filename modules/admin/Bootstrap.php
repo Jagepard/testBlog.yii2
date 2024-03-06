@@ -16,6 +16,7 @@ class Bootstrap implements BootstrapInterface
                 'admin/material/edit/<id:\d+>'        => 'admin/materials/edit',
                 'POST admin/material/update/<id:\d+>' => 'admin/materials/update',
                 'admin/material/delete/<id:\d+>'      => 'admin/materials/delete',
+                'admin/material/delimg/<id:\d+>'      => 'admin/materials/delimg',
             ]
         );
     }

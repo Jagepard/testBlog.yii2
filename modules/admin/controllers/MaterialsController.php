@@ -27,7 +27,6 @@ class MaterialsController extends AdminController
     {      
         return $this->render('add', ['title' => ': Добавить материал',]);
     }
-
     
     public function actionCreate()    
     {  
@@ -68,10 +67,7 @@ class MaterialsController extends AdminController
 
         if ($upload->image) {
             $upload->upload($imgName);
-            if (!empty($material->image)) {
-                $this->removeImg(\Yii::$app->basePath . '/web/uploads/' . $material->image);
-                $this->removeImg(\Yii::$app->basePath . '/web/uploads/thumb/' . $material->image);
-            }
+            $this->delImages($material->image);
         }
 
         $material->image = $imgName;
@@ -84,20 +80,35 @@ class MaterialsController extends AdminController
     {
         $material = Materials::findOne($id);
 
-        if (!empty($material->image)) {
-            $this->removeImg(\Yii::$app->basePath . '/web/uploads/' . $material->image);
-            $this->removeImg(\Yii::$app->basePath . '/web/uploads/thumb/' . $material->image);
-        }
-
+        $this->delImages($material->image);
         $material->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['materials/index']);
+    }
+
+    public function actionDelimg($id)
+    {
+        $material = Materials::findOne($id);
+
+        $this->delImages($material->image);
+        $material->image = '';
+        $material->write($material);
+
+        return $this->redirect(['materials/index']);
     }
 
     private function removeImg(string $imgLink): void
     {
         if (file_exists($imgLink)) {
             unlink($imgLink);
+        }
+    }
+
+    private function delImages(string $imgName): void
+    {
+        if(!empty($imgName)) {
+            $this->removeImg(\Yii::$app->basePath . '/web/uploads/' . $imgName);
+            $this->removeImg(\Yii::$app->basePath . '/web/uploads/thumb/' . $imgName);
         }
     }
 }
