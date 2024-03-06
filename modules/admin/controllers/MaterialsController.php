@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\web\UploadedFile;
 use app\modules\admin\models\Materials;
 use app\modules\admin\models\UploadImage;
+use yii\web\NotFoundHttpException;
 
 class MaterialsController extends AdminController
 {
@@ -27,7 +28,6 @@ class MaterialsController extends AdminController
     {      
         return $this->render('add', ['title' => ': Добавить материал',]);
     }
-
     
     public function actionCreate()    
     {  
@@ -50,6 +50,7 @@ class MaterialsController extends AdminController
     public function actionEdit($id)
     {      
         $material = Materials::findOne($id);
+        $this->error404($material, $id);
 
         return $this->render('edit', [
             'title'    => ': Редактировать ' . $material['title'],
@@ -63,15 +64,13 @@ class MaterialsController extends AdminController
         $upload->image = UploadedFile::getInstance($upload, 'image');
 
         $material = Materials::findOne($id);
+        $this->error404($material, $id);
         $material->setAttributes(\Yii::$app->request->post());
         $imgName  = ($upload->image) ? time() . '_' . $upload->image->name : $material->image;
 
         if ($upload->image) {
             $upload->upload($imgName);
-            if (!empty($material->image)) {
-                $this->removeImg(\Yii::$app->basePath . '/web/uploads/' . $material->image);
-                $this->removeImg(\Yii::$app->basePath . '/web/uploads/thumb/' . $material->image);
-            }
+            $this->delImages($material->image);
         }
 
         $material->image = $imgName;
@@ -83,21 +82,43 @@ class MaterialsController extends AdminController
     public function actionDelete($id)
     {
         $material = Materials::findOne($id);
-
-        if (!empty($material->image)) {
-            $this->removeImg(\Yii::$app->basePath . '/web/uploads/' . $material->image);
-            $this->removeImg(\Yii::$app->basePath . '/web/uploads/thumb/' . $material->image);
-        }
-
+        $this->error404($material, $id);
+        $this->delImages($material->image);
         $material->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['materials/index']);
+    }
+
+    public function actionDelimg($id)
+    {
+        $material = Materials::findOne($id);
+        $this->error404($material, $id);
+        $this->delImages($material->image);
+        $material->image = '';
+        $material->write($material);
+
+        return $this->redirect(['materials/index']);
     }
 
     private function removeImg(string $imgLink): void
     {
         if (file_exists($imgLink)) {
             unlink($imgLink);
+        }
+    }
+
+    private function delImages(string $imgName): void
+    {
+        if(!empty($imgName)) {
+            $this->removeImg(\Yii::$app->basePath . '/web/uploads/' . $imgName);
+            $this->removeImg(\Yii::$app->basePath . '/web/uploads/thumb/' . $imgName);
+        }
+    }
+
+    private function error404($material, $id)
+    {
+        if (!$material) {
+            throw new NotFoundHttpException("Material: $id does'nt exists");
         }
     }
 }

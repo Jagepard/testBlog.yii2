@@ -6,6 +6,7 @@ use yii\data\Pagination;
 use app\modules\auth\models\User;
 use app\modules\blog\models\Materials;
 use app\modules\blog\services\SlugService;
+use yii\web\NotFoundHttpException;
 
 class DefaultController extends BlogController
 {
@@ -34,6 +35,10 @@ class DefaultController extends BlogController
     {
         $id       = (new SlugService)->getIdFromSlug($slug);
         $material = Materials::find()->where(['id' => $id])->one();
+
+        if (!$material) {
+            throw new NotFoundHttpException("Material: $slug does'nt exists");
+        }
 
         return $this->render('item', [
             'title'    => ': ' . $material['title'],
