@@ -17,7 +17,7 @@ $this->title = $title;
     <div class="card">
     <a href="<?= Url::base(true); ?>/material/<?= $material['id'] ?>_<?= $material['slug'] ?>">
     <?php if (!empty($material['image'])) : ?>
-    <img width="350" src="<?= Url::base(true); ?>/img/<?= $material['image'] ?>" class="card-img-top" alt="<?= $material['title'] ?>">
+    <img width="350" src="<?= Url::base(true); ?>/uploads/<?= $material['image'] ?>" class="card-img-top" alt="<?= $material['title'] ?>">
     <?php endif; ?>
     </a>
       <div class="card-body">

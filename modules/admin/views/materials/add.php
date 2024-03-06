@@ -5,11 +5,12 @@ $this->title = $title;
 ?>
 
 <br>
+
 <form action="<?= Url::base(true); ?>/admin/material/create" method="post" enctype="multipart/form-data">
 <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
 <div class="mb-3">
     <label for="file" class="form-label">Фото</label>
-    <input type="file" name="file" id="file">
+    <input type="hidden" name="UploadImage[image]" value=""><input type="file" id="uploadimage-image" name="UploadImage[image]">
   </div>
   <div class="mb-3">
     <label for="title" class="form-label">Заголовок</label>

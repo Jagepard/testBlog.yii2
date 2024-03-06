@@ -5,7 +5,6 @@ namespace app\modules\admin\models;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\data\Pagination;
-use yii\base\DynamicModel;
 use app\modules\admin\services\SlugService;
 
 /**
@@ -36,7 +35,7 @@ class Materials extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'slug'], 'required'],
+            [['title'], 'required'],
             [['text'], 'string'],
             [['status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
@@ -63,29 +62,11 @@ class Materials extends \yii\db\ActiveRecord
 
     public function write(Materials $material): void
     {      
-        $request   = \Yii::$app->request;
-        $post      = $request->post();
-        $validated = DynamicModel::validateData(
-            [
-                'title' => $post['title'], 
-                'text'  => $post['text']
-            ], 
-            [
-                [['title', 'text'], 'trim'],
-                ['title', 'required'],
-                ['title', 'string', 'max' => 255],
-                ['text', 'string'],
-            ]
-        );
-    
-        if ($validated->hasErrors()) {
-            dd('validation fails');
-        } else {
-            $material->title = $validated['title'];
-            $material->slug  = (new SlugService)->translit($validated['title']);
-            $material->text  = $validated['text'];
-
+        if ($this->validate()) {
+            $material->slug  = (new SlugService)->translit($material->title);
             $material->save();
+        } else {
+            dd($this->errors);
         }
     }
 
