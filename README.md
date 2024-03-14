@@ -37,7 +37,6 @@ Seeding user data:
 php yii seed/materials
 php yii seed/user
 ```
-```
 Launch the built-in server:
 ```
 php yii serve
