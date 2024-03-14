@@ -5,9 +5,9 @@ namespace app\modules\admin\controllers;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\UploadedFile;
+use yii\web\NotFoundHttpException;
 use app\modules\admin\models\Materials;
 use app\modules\admin\models\UploadImage;
-use yii\web\NotFoundHttpException;
 
 class MaterialsController extends AdminController
 {
@@ -107,7 +107,7 @@ class MaterialsController extends AdminController
         }
     }
 
-    private function delImages(string $imgName): void
+    private function delImages(?string $imgName): void
     {
         if(!empty($imgName)) {
             $this->removeImg(\Yii::$app->basePath . '/web/uploads/' . $imgName);
